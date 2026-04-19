@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mahana Spa Wear — Luxury Spa Uniforms from New Zealand</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:ital,wght@0,100;0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#E6D7C4',
+            'cream-light': '#F0E8DC',
+            sage: '#AAB6A0',
+            rose: '#AAB6A0',
+            dark: '#1D1C1C',
+          },
+          fontFamily: {
+            cardo: ['Cardo', 'Georgia', 'serif'],
+            josefin: ['Josefin Sans', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --cream: #E6D7C4;
+      --cream-light: #F0E8DC;
+      --sage: #AAB6A0;
+      --rose: #AAB6A0;
+      --dark: #1D1C1C;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Josefin Sans', sans-serif;
+      color: var(--dark);
+      background: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* Grain texture */
+    .grain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 160px 160px;
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Typography helpers */
+    .h-display { font-family: 'Cardo', serif; letter-spacing: -0.025em; line-height: 1.08; }
+    .h-serif   { font-family: 'Cardo', serif; letter-spacing: -0.01em; }
+    .label     { font-family: 'Josefin Sans', sans-serif; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 400; }
+    .body-copy { font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.05em; line-height: 1.85; }
+
+    /* Nav */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      transition: background 0.45s ease, box-shadow 0.45s ease;
+    }
+    #nav.scrolled {
+      background: rgba(230,215,196,0.97);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 1px 0 rgba(29,28,28,0.07);
+    }
+    .nav-link {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--dark); text-decoration: none; position: relative; padding-bottom: 2px;
+    }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px; background: var(--sage);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
+
+    /* Buttons */
+    .btn-dark {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+      background: var(--dark); color: var(--cream);
+      padding: 0.85rem 2rem; border: 1px solid var(--dark);
+      display: inline-block; text-decoration: none;
+      transition: background 0.25s ease, color 0.25s ease;
+      cursor: pointer;
+    }
+    .btn-dark:hover { background: transparent; color: var(--dark); }
+    .btn-dark:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
+    .btn-dark:active { opacity: 0.7; }
+
+    .btn-sage {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
+      background: var(--sage); color: #fff;
+      padding: 0.65rem 1.4rem; border: 1px solid var(--sage);
+      display: inline-block; text-decoration: none;
+      transition: background 0.25s ease, color 0.25s ease;
+      cursor: pointer;
+    }
+    .btn-sage:hover { background: transparent; color: var(--sage); }
+    .btn-sage:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
+    .btn-sage:active { opacity: 0.7; }
+
+    /* Hero */
+    .hero-bg {
+      background-color: var(--cream);
+      background-image:
+        radial-gradient(ellipse 90% 70% at 15% 25%, rgba(170,182,160,0.28) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 55% at 85% 75%, rgba(170,182,160,0.18) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 40% at 55% 10%, rgba(240,232,220,0.9) 0%, transparent 50%);
+    }
+
+    /* Ornamental divider */
+    .divider {
+      display: flex; align-items: center; gap: 1.2rem; justify-content: center;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; max-width: 64px; height: 1px;
+      background: currentColor; opacity: 0.25;
+    }
+
+    /* Cards */
+    .card {
+      background: rgba(255,255,255,0.68);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(170,182,160,0.18);
+      transition: transform 0.38s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.38s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px rgba(29,28,28,0.07), 0 2px 8px rgba(170,182,160,0.18);
+    }
+
+    /* EOL badge */
+    .badge-eol {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.55rem; letter-spacing: 0.16em; text-transform: uppercase;
+      background: var(--rose); color: #fff;
+      padding: 0.22rem 0.65rem; display: inline-block;
+    }
+
+    /* Feature icon ring */
+    .feat-ring {
+      width: 52px; height: 52px;
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Size table */
+    .sz-table th {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 400;
+      padding: 0.8rem 0.9rem;
+      border-bottom: 1px solid rgba(170,182,160,0.35);
+      color: rgba(29,28,28,0.45);
+    }
+    .sz-table td {
+      font-family: 'Cardo', serif;
+      padding: 0.75rem 0.9rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(170,182,160,0.18);
+      font-size: 0.95rem;
+    }
+    .sz-table tr:last-child td { border-bottom: none; }
+    .sz-table td:first-child {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400;
+      text-align: left; color: rgba(29,28,28,0.45);
+    }
+
+    /* Testimonial card */
+    .testi-card {
+      background: rgba(255,255,255,0.52);
+      border: 1px solid rgba(255,255,255,0.7);
+      backdrop-filter: blur(6px);
+    }
+
+    /* Footer link */
+    .ft-link {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem; letter-spacing: 0.1em;
+      color: rgba(230,215,196,0.6); text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .ft-link:hover { color: var(--cream); }
+    .ft-link:focus-visible { outline: 1px solid var(--sage); outline-offset: 2px; }
+
+    /* Scroll reveal */
+    .rv { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .rv.in { opacity: 1; transform: translateY(0); }
+
+    /* Koru ornament */
+    .koru { opacity: 0.09; pointer-events: none; }
+
+    /* Mobile menu */
+    #mob-menu { display: none; }
+    #mob-menu.open { display: flex; }
+
+    /* Aurora background */
+    @keyframes aurora {
+      from { background-position: 50% 50%, 50% 50%; }
+      to   { background-position: 350% 50%, 350% 50%; }
+    }
+    .aurora-layer {
+      position: absolute;
+      inset: -10px;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.45;
+      filter: blur(12px);
+      background-image:
+        repeating-linear-gradient(100deg, #AAB6A0 10%, #C5D1BC 15%, #D4C5B0 20%, #E8D8C2 25%, #B5C4AE 30%);
+      background-size: 200%;
+      background-position: 50% 50%;
+      animation: aurora 60s linear infinite;
+      -webkit-mask-image: radial-gradient(ellipse at 85% 5%, black 10%, transparent 65%);
+      mask-image: radial-gradient(ellipse at 85% 5%, black 10%, transparent 65%);
+      will-change: transform;
+    }
+    .aurora-layer::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(100deg, #AAB6A0 10%, #C5D1BC 15%, #D4C5B0 20%, #E8D8C2 25%, #B5C4AE 30%);
+      background-size: 100%;
+      animation: aurora 60s linear infinite;
+      background-attachment: fixed;
+      mix-blend-mode: difference;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav id="nav" class="py-5 px-6 md:px-10">
+  <div class="max-w-6xl mx-auto flex items-center justify-between">
+    <a href="#" aria-label="Mahana Spa Wear home" class="flex-shrink-0">
+      <img src="./brand assets/mahana-spa-wear-logo-revised.png" alt="Mahana Spa Wear" class="h-9 md:h-11 w-auto" style="min-width:140px;">
+    </a>
+    <div class="hidden md:flex items-center gap-9">
+      <a href="#collection" class="nav-link">Collection</a>
+      <a href="#fabric"     class="nav-link">Fabric</a>
+      <a href="#sizing"     class="nav-link">Sizing</a>
+      <a href="#reviews"    class="nav-link">Reviews</a>
+      <a href="#contact"    class="nav-link">Contact</a>
+      <a href="mailto:lovebodytreat@outlook.com" class="btn-dark" style="padding:0.6rem 1.4rem;">Order Now</a>
+    </div>
+    <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-1" aria-label="Open menu">
+      <span class="block w-6 h-px bg-dark"></span>
+      <span class="block w-6 h-px bg-dark"></span>
+      <span class="block w-5 h-px bg-dark"></span>
+    </button>
+  </div>
+  <div id="mob-menu" class="md:hidden flex-col gap-5 px-6 pt-6 pb-8 mt-4 border-t border-dark/10" style="background:rgba(230,215,196,0.98);">
+    <a href="#collection" class="nav-link">Collection</a>
+    <a href="#fabric"     class="nav-link">Fabric</a>
+    <a href="#sizing"     class="nav-link">Sizing</a>
+    <a href="#reviews"    class="nav-link">Reviews</a>
+    <a href="#contact"    class="nav-link">Contact</a>
+    <a href="mailto:lovebodytreat@outlook.com" class="btn-dark text-center mt-2">Order Now</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="relative min-h-screen flex items-end" style="overflow:hidden;">
+  <!-- Full-bleed background image -->
+  <img src="./brand assets/banner_image_001.png" alt="Mahana Spa Wear uniforms"
+    class="absolute inset-0 w-full h-full"
+    style="object-fit:cover; object-position:center top;">
+
+  <!-- Gradient overlay: transparent at top, darkening at bottom for text legibility -->
+  <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(230,215,196,0.15) 0%, rgba(29,28,28,0.55) 100%);"></div>
+  <!-- Left-side vignette for extra text contrast -->
+  <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(29,28,28,0.35) 0%, transparent 60%);"></div>
+
+  <!-- Aurora shimmer — behind hero text -->
+  <div class="aurora-layer"></div>
+
+  <!-- Text content — bottom left on desktop, centered on mobile -->
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-14 pb-20 pt-40 text-center sm:text-left">
+    <p class="label text-white/60 mb-5">Nelson · New Zealand</p>
+    <h1 class="h-display text-5xl md:text-6xl lg:text-8xl text-white mb-6" style="text-shadow: 0 2px 24px rgba(0,0,0,0.18);">
+      Spa Uniforms<br><em>Worth Wearing</em>
+    </h1>
+    <p class="body-copy text-white/75 text-sm md:text-base mb-10 mx-auto sm:mx-0" style="max-width:440px; line-height:1.85;">
+      Handcrafted for day spas, salons &amp; clinics across New Zealand.
+      Māori-inspired design. Made locally, right here in Nelson.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
+      <a href="#collection" class="btn-dark text-center" style="background:rgba(230,215,196,0.95); color:var(--dark); border-color:rgba(230,215,196,0.95);">View Collection</a>
+      <a href="mailto:lovebodytreat@outlook.com" class="btn-sage text-center" style="padding:0.85rem 2rem; font-size:0.62rem; letter-spacing:0.2em;">Order Now</a>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="flex flex-col items-start gap-2 mt-14">
+      <span class="label text-white/40" style="font-size:0.52rem; writing-mode:vertical-lr; letter-spacing:0.2em;">Scroll</span>
+      <div style="width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.35),transparent);"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── VALUES ─── -->
+<section class="bg-white py-20 px-6">
+  <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-dark/8">
+
+    <div class="text-center px-10 py-10 rv">
+      <p class="label mb-4" style="color:var(--sage);">Luxurious</p>
+      <h3 class="h-serif text-2xl text-dark italic mb-3">Refined in every detail</h3>
+      <p class="body-copy text-dark/55 text-xs">Real Paua shell buttons. Māori koru trims. Silky-smooth polyester that drapes beautifully on the body — because looking the part matters.</p>
+    </div>
+
+    <div class="text-center px-10 py-10 rv" style="transition-delay:0.1s;">
+      <p class="label mb-4" style="color:var(--rose);">Professional</p>
+      <h3 class="h-serif text-2xl text-dark italic mb-3">Designed for practitioners</h3>
+      <p class="body-copy text-dark/55 text-xs">Tailored for movement, comfort, and longevity. Anti-bacterial and quick-drying — ideal for a full day of back-to-back treatments.</p>
+    </div>
+
+    <div class="text-center px-10 py-10 rv" style="transition-delay:0.2s;">
+      <p class="label mb-4" style="color:var(--sage);">Convenient</p>
+      <h3 class="h-serif text-2xl text-dark italic mb-3">Easy care, every time</h3>
+      <p class="body-copy text-dark/55 text-xs">Machine washable and dry in just 30 minutes. No ironing needed. Sizes 6–24, with larger sizes and extended colour ranges available.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── FABRIC ─── -->
+<section id="fabric" class="py-20 px-6 relative overflow-hidden" style="background:var(--sage);">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14 rv">
+      <p class="label text-white/50 mb-3">The Fabric</p>
+      <h2 class="h-display text-4xl md:text-5xl text-white">100% Lightweight Polyester</h2>
+      <p class="body-copy text-white/60 text-xs mt-4 max-w-sm mx-auto">All materials sourced from NZ businesses. Produced locally in Nelson.</p>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
+
+      <div class="flex flex-col items-center gap-3 rv">
+        <div class="feat-ring">
+          <svg width="22" height="22" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <span class="label text-white/75 text-center" style="font-size:0.55rem;">Anti-bacterial</span>
+      </div>
+
+      <div class="flex flex-col items-center gap-3 rv" style="transition-delay:0.06s;">
+        <div class="feat-ring">
+          <svg width="22" height="22" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2v2"/><path d="M12 8c0 0-5 5.5-5 9a5 5 0 0010 0c0-3.5-5-9-5-9z"/></svg>
+        </div>
+        <span class="label text-white/75 text-center" style="font-size:0.55rem;">Moisture Wicking</span>
+      </div>
+
+      <div class="flex flex-col items-center gap-3 rv" style="transition-delay:0.12s;">
+        <div class="feat-ring">
+          <svg width="22" height="22" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <span class="label text-white/75 text-center" style="font-size:0.55rem;">Soft &amp; Silky</span>
+      </div>
+
+      <div class="flex flex-col items-center gap-3 rv" style="transition-delay:0.18s;">
+        <div class="feat-ring">
+          <svg width="22" height="22" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><circle cx="12" cy="13" r="4"/><circle cx="4.5" cy="7" r="1" fill="white"/><circle cx="7.5" cy="7" r="1" fill="white"/></svg>
+        </div>
+        <span class="label text-white/75 text-center" style="font-size:0.55rem;">Machine Washable</span>
+      </div>
+
+      <div class="flex flex-col items-center gap-3 rv" style="transition-delay:0.24s;">
+        <div class="feat-ring">
+          <svg width="22" height="22" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <span class="label text-white/75 text-center" style="font-size:0.55rem;">Dries in 30 Min</span>
+      </div>
+
+      <div class="flex flex-col items-center gap-3 rv" style="transition-delay:0.3s;">
+        <div class="feat-ring">
+          <svg width="22" height="22" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M2 8l4 4 4-4 4 4 4-4"/><line x1="2" y1="14" x2="22" y2="14"/><line x1="2" y1="18" x2="22" y2="18"/></svg>
+        </div>
+        <span class="label text-white/75 text-center" style="font-size:0.55rem;">No Iron</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── COLLECTION ─── -->
+<section id="collection" class="py-24 px-6" style="background:var(--cream-light);">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="text-center mb-16 rv">
+      <p class="label text-dark/40 mb-3">The Collection</p>
+      <h2 class="h-display text-4xl md:text-5xl text-dark">Spa Wear, Crafted for NZ</h2>
+      <div class="divider mt-6" style="color:var(--sage);">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="var(--sage)" aria-hidden="true"><circle cx="5" cy="5" r="3"/></svg>
+      </div>
+      <p class="label text-dark/40 mt-6 max-w-md mx-auto" style="line-height:2; font-size:0.6rem;">All uniforms $112 + GST · Sizes 6–24 in Black standard · Extended colours on orders of 4+</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- 01 Kiwi Spirit -->
+      <article class="card p-7 rv">
+        <a href="kiwi-spirit.html" class="block aspect-[3/4] mb-6 overflow-hidden bg-white">
+          <img src="./brand assets/uniform-product-images/kiwi-spirit-trims/Black with brown koru trim.jpg" alt="Kiwi Spirit tunic" class="w-full h-full object-cover object-top" style="transition:transform 0.5s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+        </a>
+        <p class="label text-dark/35 mb-1.5">No. 01</p>
+        <h3 class="h-serif text-2xl text-dark mb-2"><a href="kiwi-spirit.html" class="hover:text-sage" style="transition:color 0.2s;">Kiwi Spirit</a></h3>
+        <p class="body-copy text-dark/55 text-xs mb-4">Mock wrap tunic with Koru print trim, covered buttons, 30 cm invisible side zip, and high side splits.</p>
+        <p class="label text-dark/35 mb-1" style="font-size:0.55rem;">Trim options</p>
+        <p class="body-copy text-dark/50 text-xs mb-5">Brown Koru · Paua · Kowhaiwhai · Red Moko</p>
+        <div class="flex items-center justify-between pt-4 border-t border-dark/8">
+          <span class="h-serif text-lg text-dark">$112 <span class="label text-dark/35" style="font-size:0.55rem;">+ GST</span></span>
+          <div class="flex gap-2">
+            <a href="kiwi-spirit.html" class="btn-sage" style="background:transparent;color:var(--sage);">Details</a>
+            <a href="mailto:lovebodytreat@outlook.com?subject=Kiwi Spirit Enquiry" class="btn-sage">Enquire</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 02 Kiwi Spirit + Pockets -->
+      <article class="card p-7 rv" style="transition-delay:0.07s;">
+        <a href="kiwi-spirit-pockets.html" class="block aspect-[3/4] mb-6 overflow-hidden bg-white">
+          <img src="./brand assets/uniform-product-images/kiwi-spirit-pockets/Black with paua trim.jpg" alt="Kiwi Spirit with front pockets" class="w-full h-full object-cover object-top" style="transition:transform 0.5s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+        </a>
+        <p class="label text-dark/35 mb-1.5">No. 02</p>
+        <h3 class="h-serif text-2xl text-dark mb-2"><a href="kiwi-spirit-pockets.html" class="hover:text-sage" style="transition:color 0.2s;">Kiwi Spirit <em>+ Pockets</em></a></h3>
+        <p class="body-copy text-dark/55 text-xs mb-4">The original Kiwi Spirit enhanced with functional front pockets — everything you need, right at hand.</p>
+        <p class="label text-dark/35 mb-1" style="font-size:0.55rem;">Trim options</p>
+        <p class="body-copy text-dark/50 text-xs mb-5">Brown Koru · Paua · Kowhaiwhai · Red Moko</p>
+        <div class="flex items-center justify-between pt-4 border-t border-dark/8">
+          <span class="h-serif text-lg text-dark">$112 <span class="label text-dark/35" style="font-size:0.55rem;">+ GST</span></span>
+          <div class="flex gap-2">
+            <a href="kiwi-spirit-pockets.html" class="btn-sage" style="background:transparent;color:var(--sage);">Details</a>
+            <a href="mailto:lovebodytreat@outlook.com?subject=Kiwi Spirit Pockets Enquiry" class="btn-sage">Enquire</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 03 Paua Classic -->
+      <article class="card p-7 rv" style="transition-delay:0.14s;">
+        <a href="paua.html" class="block aspect-[3/4] mb-6 overflow-hidden bg-white">
+          <img src="./brand assets/uniform-product-images/paua-classic/paua-classic.jpeg" alt="Paua Classic tunic" class="w-full h-full object-cover object-top" style="transition:transform 0.5s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+        </a>
+        <p class="label text-dark/35 mb-1.5">No. 03</p>
+        <h3 class="h-serif text-2xl text-dark mb-2"><a href="paua.html" class="hover:text-sage" style="transition:color 0.2s;">Paua Classic</a></h3>
+        <p class="body-copy text-dark/55 text-xs mb-4">Mandarin collar with authentic real New Zealand Paua shell buttons — a nod to the natural beauty of Aotearoa.</p>
+        <p class="label text-dark/35 mb-1" style="font-size:0.55rem;">Colours</p>
+        <p class="body-copy text-dark/50 text-xs mb-5">Black standard · Extended colours on 4+ orders</p>
+        <div class="flex items-center justify-between pt-4 border-t border-dark/8">
+          <span class="h-serif text-lg text-dark">$112 <span class="label text-dark/35" style="font-size:0.55rem;">+ GST</span></span>
+          <div class="flex gap-2">
+            <a href="paua.html" class="btn-sage" style="background:transparent;color:var(--sage);">Details</a>
+            <a href="mailto:lovebodytreat@outlook.com?subject=Paua Classic Enquiry" class="btn-sage">Enquire</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 04 Elegance -->
+      <article class="card p-7 rv">
+        <a href="elegance.html" class="block aspect-[3/4] mb-6 overflow-hidden bg-white">
+          <img src="./brand assets/uniform-product-images/elegance/elegance.jpeg" alt="Elegance tunic" class="w-full h-full object-cover object-top" style="transition:transform 0.5s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+        </a>
+        <p class="label text-dark/35 mb-1.5">No. 04</p>
+        <h3 class="h-serif text-2xl text-dark mb-2"><a href="elegance.html" class="hover:text-sage" style="transition:color 0.2s;">Elegance</a></h3>
+        <p class="body-copy text-dark/55 text-xs mb-4">Three functional buttons with a 30 cm invisible side zip. Beautifully tailored with high side splits for ease of movement.</p>
+        <p class="label text-dark/35 mb-1" style="font-size:0.55rem;">Colours</p>
+        <p class="body-copy text-dark/50 text-xs mb-5">Black standard · Extended colours on 4+ orders</p>
+        <div class="flex items-center justify-between pt-4 border-t border-dark/8">
+          <span class="h-serif text-lg text-dark">$112 <span class="label text-dark/35" style="font-size:0.55rem;">+ GST</span></span>
+          <div class="flex gap-2">
+            <a href="elegance.html" class="btn-sage" style="background:transparent;color:var(--sage);">Details</a>
+            <a href="mailto:lovebodytreat@outlook.com?subject=Elegance Enquiry" class="btn-sage">Enquire</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 05 Sweetheart (EOL) -->
+      <article class="card p-7 rv" style="transition-delay:0.07s;">
+        <a href="sweetheart.html" class="relative block aspect-[3/4] mb-6 overflow-hidden bg-white">
+          <img src="./brand assets/uniform-product-images/sweetheart/sweetheart.jpg" alt="Sweetheart tunic" class="w-full h-full object-cover object-top" style="transition:transform 0.5s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+          <div class="absolute top-3 left-3"><span class="badge-eol">End of Line</span></div>
+        </a>
+        <p class="label text-dark/35 mb-1.5">No. 05</p>
+        <h3 class="h-serif text-2xl text-dark mb-2"><a href="sweetheart.html" class="hover:text-sage" style="transition:color 0.2s;">Sweetheart</a></h3>
+        <p class="body-copy text-dark/55 text-xs mb-4">Open sweetheart neckline with elegant Paua buttons. Black only — limited sizes while stocks last.</p>
+        <p class="label mb-1" style="color:var(--sage); font-size:0.55rem;">Limited availability · Black only</p>
+        <p class="body-copy text-dark/50 text-xs mb-5">Contact for available sizes</p>
+        <div class="flex items-center justify-between pt-4 border-t border-dark/8">
+          <div class="flex items-baseline gap-2">
+            <span class="h-serif text-lg text-sage">$70 <span class="label" style="font-size:0.55rem; color:rgba(29,28,28,0.35);">+ GST</span></span>
+            <span class="label text-dark/25 line-through" style="font-size:0.6rem;">$112</span>
+          </div>
+          <div class="flex gap-2">
+            <a href="sweetheart.html" class="btn-sage" style="background:transparent;color:var(--sage);">Details</a>
+            <a href="mailto:lovebodytreat@outlook.com?subject=Sweetheart Enquiry" class="btn-sage">Enquire</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 06 3 Button Front (EOL) -->
+      <article class="card p-7 rv" style="transition-delay:0.14s;">
+        <a href="3-button-front.html" class="relative block aspect-[3/4] mb-6 overflow-hidden bg-white">
+          <img src="./brand assets/uniform-product-images/3-button-front/3-button-front.jpeg" alt="3 Button Front tunic" class="w-full h-full object-cover object-top" style="transition:transform 0.5s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+          <div class="absolute top-3 left-3"><span class="badge-eol">End of Line</span></div>
+        </a>
+        <p class="label text-dark/35 mb-1.5">No. 06</p>
+        <h3 class="h-serif text-2xl text-dark mb-2"><a href="3-button-front.html" class="hover:text-sage" style="transition:color 0.2s;">3 Button Front</a></h3>
+        <p class="body-copy text-dark/55 text-xs mb-4">Mandarin collar with invisible side zip and greenstone-effect buttons. Black only, limited sizes remaining.</p>
+        <p class="label mb-1" style="color:var(--sage); font-size:0.55rem;">Limited availability · Black only</p>
+        <p class="body-copy text-dark/50 text-xs mb-5">Contact for available sizes</p>
+        <div class="flex items-center justify-between pt-4 border-t border-dark/8">
+          <div class="flex items-baseline gap-2">
+            <span class="h-serif text-lg text-sage">$70 <span class="label" style="font-size:0.55rem; color:rgba(29,28,28,0.35);">+ GST</span></span>
+            <span class="label text-dark/25 line-through" style="font-size:0.6rem;">$112</span>
+          </div>
+          <div class="flex gap-2">
+            <a href="3-button-front.html" class="btn-sage" style="background:transparent;color:var(--sage);">Details</a>
+            <a href="mailto:lovebodytreat@outlook.com?subject=3 Button Front Enquiry" class="btn-sage">Enquire</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Face Masks -->
+    <div class="mt-8 rv">
+      <article class="card p-7 md:p-10 flex flex-col md:flex-row gap-8 items-start">
+        <div class="w-full md:w-44 aspect-square flex-shrink-0 overflow-hidden" style="background:linear-gradient(145deg,rgba(170,182,160,0.15),rgba(230,215,196,0.6));">
+          <img src="https://placehold.co/180x180/E6D7C4/9aab90?text=Face+Masks" alt="Matching face masks" class="w-full h-full object-cover">
+        </div>
+        <div class="flex-1">
+          <p class="label text-dark/35 mb-2">Accessory</p>
+          <h3 class="h-serif text-2xl text-dark mb-2">Matching Face Masks</h3>
+          <p class="body-copy text-dark/55 text-xs mb-5">Two-layer washable cloth — polyester outer, cotton inner with a filter pouch and elastic loops. Available in matching trims to coordinate with your uniform. <em>Not medical grade.</em></p>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="label border border-dark/12 text-dark/45 px-3 py-1.5" style="font-size:0.55rem;">Brown Koru</span>
+            <span class="label border border-dark/12 text-dark/45 px-3 py-1.5" style="font-size:0.55rem;">Kowhaiwhai</span>
+            <span class="label border border-dark/12 text-dark/45 px-3 py-1.5" style="font-size:0.55rem;">Red Moko</span>
+            <span class="label border border-dark/12 text-dark/45 px-3 py-1.5" style="font-size:0.55rem;">Paua</span>
+          </div>
+          <div class="flex items-center gap-5">
+            <span class="h-serif text-lg text-dark">$9.95 <span class="label text-dark/35" style="font-size:0.55rem;">+ GST each</span></span>
+            <a href="mailto:lovebodytreat@outlook.com?subject=Face Masks Enquiry" class="btn-sage">Enquire</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Extended colours note -->
+    <div class="mt-10 text-center rv">
+      <p class="label text-dark/35 mb-4" style="font-size:0.58rem;">Extended Colour Options (minimum order of 4)</p>
+      <div class="flex flex-wrap gap-2 justify-center">
+        <span class="label text-dark/50 border border-dark/10 px-4 py-2" style="font-size:0.58rem;">Burgundy</span>
+        <span class="label text-dark/50 border border-dark/10 px-4 py-2" style="font-size:0.58rem;">Red</span>
+        <span class="label text-dark/50 border border-dark/10 px-4 py-2" style="font-size:0.58rem;">White</span>
+        <span class="label text-dark/50 border border-dark/10 px-4 py-2" style="font-size:0.58rem;">Charcoal Marle</span>
+        <span class="label text-dark/50 border border-dark/10 px-4 py-2" style="font-size:0.58rem;">Chambray Blue</span>
+        <span class="label text-dark/50 border border-dark/10 px-4 py-2" style="font-size:0.58rem;">Chambray Royal</span>
+        <span class="label text-dark/50 border border-dark/10 px-4 py-2" style="font-size:0.58rem;">Royal</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── SIZE GUIDE ─── -->
+<section id="sizing" class="py-24 px-6 bg-white">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-12 rv">
+      <p class="label text-dark/40 mb-3">Sizing</p>
+      <h2 class="h-display text-4xl md:text-5xl text-dark">Size Guide</h2>
+      <p class="body-copy text-dark/50 text-xs mt-4 max-w-md mx-auto">All measurements in centimetres. Between sizes? Go up. High side splits give extra ease. Size 24+ available on request.</p>
+    </div>
+    <div class="overflow-x-auto rv">
+      <table class="sz-table w-full">
+        <thead>
+          <tr style="background:var(--cream);">
+            <th class="text-left" style="min-width:100px;">Measurement</th>
+            <th>6</th><th>8</th><th>10</th><th>12</th><th>14</th>
+            <th>16</th><th>18</th><th>20</th><th>22</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Bust (cm)</td>
+            <td>85</td><td>90</td><td>95</td><td>100</td><td>105</td>
+            <td>110</td><td>115</td><td>120</td><td>125</td>
+          </tr>
+          <tr style="background:rgba(170,182,160,0.07);">
+            <td>Waist (cm)</td>
+            <td>69</td><td>74</td><td>79</td><td>84</td><td>89</td>
+            <td>94</td><td>99</td><td>104</td><td>109</td>
+          </tr>
+          <tr>
+            <td>Hips (cm)</td>
+            <td>91</td><td>96</td><td>101</td><td>106</td><td>111</td>
+            <td>116</td><td>121</td><td>126</td><td>131</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="body-copy text-dark/40 text-xs text-center mt-6 rv">Size 24 and above available on request — contact Rosie to discuss your requirements.</p>
+  </div>
+</section>
+
+<!-- ─── TESTIMONIALS ─── -->
+<section id="reviews" class="py-24 px-6 relative overflow-hidden" style="background:var(--cream);">
+  <svg class="koru absolute -right-16 top-1/2 -translate-y-1/2 w-[480px] h-[480px]" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+    <path d="M100,170 C100,170 28,158 18,98 C8,38 54,8 94,8 C140,8 178,46 178,90 C178,127 152,152 116,152 C84,152 63,128 63,100 C63,76 79,60 100,60 C119,60 132,74 132,90 C132,105 121,114 108,109" stroke="#AAB6A0" stroke-width="1.6" stroke-linecap="round"/>
+  </svg>
+  <div class="max-w-5xl mx-auto relative z-10">
+    <div class="text-center mb-14 rv">
+      <p class="label text-dark/40 mb-3">Client Stories</p>
+      <h2 class="h-display text-4xl md:text-5xl text-dark">What Our Clients Say</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+
+      <blockquote class="testi-card p-10 rv">
+        <svg width="28" height="22" viewBox="0 0 28 22" class="mb-6" style="opacity:0.18;" aria-hidden="true">
+          <path d="M0 22V13.2C0 9.68 0.88 6.68 2.64 4.18C4.4 1.68 6.88 0.14 10.12 0L11 3.3C9.02 3.74 7.44 4.7 6.27 6.16C5.1 7.62 4.47 9.32 4.4 11.22H8.8V22H0ZM17.6 22V13.2C17.6 9.68 18.48 6.68 20.24 4.18C22 1.68 24.48 0.14 27.72 0L28.6 3.3C26.62 3.74 25.04 4.7 23.87 6.16C22.7 7.62 22.07 9.32 22 11.22H26.4V22H17.6Z" fill="var(--dark)"/>
+        </svg>
+        <p class="h-serif text-xl text-dark italic mb-7" style="line-height:1.7;">"Excellent communication. These are the only uniforms I've found that I truly like. Proud to support a small New Zealand business."</p>
+        <footer class="pt-5 border-t border-dark/10">
+          <p class="body-copy text-dark text-sm font-semibold">Marcela</p>
+          <p class="label text-dark/40 mt-0.5" style="font-size:0.57rem;">Marcela Exclusive · Dunedin</p>
+        </footer>
+      </blockquote>
+
+      <blockquote class="testi-card p-10 rv" style="transition-delay:0.1s;">
+        <svg width="28" height="22" viewBox="0 0 28 22" class="mb-6" style="opacity:0.18;" aria-hidden="true">
+          <path d="M0 22V13.2C0 9.68 0.88 6.68 2.64 4.18C4.4 1.68 6.88 0.14 10.12 0L11 3.3C9.02 3.74 7.44 4.7 6.27 6.16C5.1 7.62 4.47 9.32 4.4 11.22H8.8V22H0ZM17.6 22V13.2C17.6 9.68 18.48 6.68 20.24 4.18C22 1.68 24.48 0.14 27.72 0L28.6 3.3C26.62 3.74 25.04 4.7 23.87 6.16C22.7 7.62 22.07 9.32 22 11.22H26.4V22H17.6Z" fill="var(--dark)"/>
+        </svg>
+        <p class="h-serif text-xl text-dark italic mb-7" style="line-height:1.7;">"Professional, elegant, and comfortable. My team love them — easy to wash and dry, and wonderful to see them so well-presented."</p>
+        <footer class="pt-5 border-t border-dark/10">
+          <p class="body-copy text-dark text-sm font-semibold">Katie</p>
+          <p class="label text-dark/40 mt-0.5" style="font-size:0.57rem;">Enriching Day Spa · Nelson</p>
+        </footer>
+      </blockquote>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── ORDERING & RETURNS ─── -->
+<section id="ordering" class="py-24 px-6 bg-white">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14 rv">
+      <p class="label text-dark/40 mb-3">Getting Started</p>
+      <h2 class="h-display text-4xl md:text-5xl text-dark">Ordering &amp; Returns</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-24">
+
+      <div class="rv">
+        <p class="label mb-8" style="color:var(--sage);">How to Order</p>
+        <ol class="space-y-6">
+          <li class="flex gap-5">
+            <span class="h-serif text-3xl leading-none flex-shrink-0 mt-0.5" style="color:var(--sage);">01</span>
+            <div>
+              <p class="body-copy text-dark text-sm font-semibold mb-1">Contact Rosie by email</p>
+              <p class="body-copy text-dark/50 text-xs">Send your selections, sizes, colours, and trim preferences to <a href="mailto:lovebodytreat@outlook.com" class="underline underline-offset-2 hover:text-dark" style="transition:color 0.2s;">lovebodytreat@outlook.com</a></p>
+            </div>
+          </li>
+          <li class="flex gap-5">
+            <span class="h-serif text-3xl leading-none flex-shrink-0 mt-0.5" style="color:var(--sage);">02</span>
+            <div>
+              <p class="body-copy text-dark text-sm font-semibold mb-1">Receive a quote</p>
+              <p class="body-copy text-dark/50 text-xs">All prices NZD, excluding postage. Postage is quoted per order. Prices, fabrics, and styles may change without notice.</p>
+            </div>
+          </li>
+          <li class="flex gap-5">
+            <span class="h-serif text-3xl leading-none flex-shrink-0 mt-0.5" style="color:var(--sage);">03</span>
+            <div>
+              <p class="body-copy text-dark text-sm font-semibold mb-1">Delivery</p>
+              <p class="body-copy text-dark/50 text-xs">Out-of-stock items: please allow 2–4 weeks. Wash care instructions must be followed to maintain your garment.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="rv" style="transition-delay:0.1s;">
+        <p class="label mb-8" style="color:var(--rose);">Returns Policy</p>
+        <ol class="space-y-6">
+          <li class="flex gap-5">
+            <span class="h-serif text-3xl leading-none flex-shrink-0 mt-0.5" style="color:var(--rose);">01</span>
+            <div>
+              <p class="body-copy text-dark text-sm font-semibold mb-1">10-day return window</p>
+              <p class="body-copy text-dark/50 text-xs">Returns accepted within 10 days of receipt. Items must be unworn, unwashed, and unaltered.</p>
+            </div>
+          </li>
+          <li class="flex gap-5">
+            <span class="h-serif text-3xl leading-none flex-shrink-0 mt-0.5" style="color:var(--rose);">02</span>
+            <div>
+              <p class="body-copy text-dark text-sm font-semibold mb-1">Return postage</p>
+              <p class="body-copy text-dark/50 text-xs">The customer is responsible for return postage costs. Original and return postage are non-refundable.</p>
+            </div>
+          </li>
+          <li class="flex gap-5">
+            <span class="h-serif text-3xl leading-none flex-shrink-0 mt-0.5" style="color:var(--rose);">03</span>
+            <div>
+              <p class="body-copy text-dark text-sm font-semibold mb-1">Questions?</p>
+              <p class="body-copy text-dark/50 text-xs">Contact Rosie at <a href="mailto:lovebodytreat@outlook.com" class="underline underline-offset-2 hover:text-dark" style="transition:color 0.2s;">lovebodytreat@outlook.com</a> or call <a href="tel:+64210329514" class="underline underline-offset-2 hover:text-dark" style="transition:color 0.2s;">021 032 9514</a>.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER / CONTACT ─── -->
+<footer id="contact" class="py-20 px-6" style="background:var(--dark);">
+  <div class="max-w-5xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-14">
+
+      <div>
+        <img src="./brand assets/mahana-spa-wear-logo-revised-inverted.png" alt="Mahana Spa Wear" class="h-10 w-auto mb-6">
+        <p class="body-copy text-xs mb-6" style="color:rgba(230,215,196,0.45); line-height:1.9;">Professional spa uniforms handcrafted in Nelson, New Zealand. All materials sourced locally.</p>
+        <a href="https://facebook.com/mahanaspawear" target="_blank" rel="noopener noreferrer" class="ft-link flex items-center gap-2.5">
+          <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          Facebook
+        </a>
+      </div>
+
+      <div>
+        <p class="label mb-6" style="color:rgba(230,215,196,0.35); font-size:0.57rem;">Get in Touch</p>
+        <ul class="space-y-5">
+          <li>
+            <p class="label mb-1" style="color:rgba(230,215,196,0.25); font-size:0.52rem;">Email</p>
+            <a href="mailto:lovebodytreat@outlook.com" class="ft-link">lovebodytreat@outlook.com</a>
+          </li>
+          <li>
+            <p class="label mb-1" style="color:rgba(230,215,196,0.25); font-size:0.52rem;">Phone</p>
+            <a href="tel:+64210329514" class="ft-link">021 032 9514</a>
+            <p class="body-copy text-xs mt-1" style="color:rgba(230,215,196,0.28); letter-spacing:0.05em;">Leave a message — Rosie will call back</p>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="label mb-6" style="color:rgba(230,215,196,0.35); font-size:0.57rem;">Postal Address</p>
+        <address class="not-italic ft-link" style="line-height:2; font-size:0.75rem;">
+          1381 Moutere Highway<br>
+          Upper Moutere, 7173<br>
+          Nelson, New Zealand
+        </address>
+        <p class="label mt-8 mb-4" style="color:rgba(230,215,196,0.35); font-size:0.57rem;">Quick Links</p>
+        <div class="space-y-2.5">
+          <div><a href="#collection" class="ft-link">Collection</a></div>
+          <div><a href="#sizing"     class="ft-link">Size Guide</a></div>
+          <div><a href="#ordering"   class="ft-link">How to Order</a></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-3" style="border-color:rgba(230,215,196,0.1);">
+      <p class="label" style="color:rgba(230,215,196,0.2); font-size:0.52rem;">© 2026 Mahana Spa Wear. All rights reserved. Prices in NZD excl. GST.</p>
+      <p class="label" style="color:rgba(230,215,196,0.2); font-size:0.52rem;">Made with care in Nelson, New Zealand</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobMenu   = document.getElementById('mob-menu');
+  hamburger.addEventListener('click', () => mobMenu.classList.toggle('open'));
+  mobMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobMenu.classList.remove('open')));
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.rv').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
